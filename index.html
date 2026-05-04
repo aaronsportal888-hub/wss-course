@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -19,6 +20,7 @@
   .nav-btn:hover{border-color:#555!important}
   .term-header:hover{background:rgba(255,255,255,0.02)!important}
   .resource-card:hover{border-color:#444!important}
+  .yt-link:hover{background:rgba(255,68,68,0.15)!important}
   @media(max-width:700px){
     .lesson-layout{flex-direction:column!important}
     .sidebar{width:100%!important;min-height:auto!important;border-left:none!important;border-top:1px solid #1e1e1e!important}
@@ -33,564 +35,587 @@
 <div id="root"></div>
 <script type="text/babel">
 
+function embedToWatch(embedUrl) {
+const id = embedUrl.split(’/embed/’)[1]?.split(’?’)[0];
+return id ? `https://www.youtube.com/watch?v=${id}` : ‘#’;
+}
+
 const COURSE = {
-  years: [
-    {
-      label: "Year One", subtitle: "Building the Foundation",
-      terms: [
-        {
-          id:"t1", label:"Term 1", title:"Introduction to Drawing", color:"#c8a96e",
-          lessons: [
-            { week:1, title:"Materials, Mark-Making & Seeing",
-              videos:[
-                {title:"Sketching Basics + Materials — Virtual Instructor", url:"https://www.youtube.com/embed/wKyD5MvKTDs"},
-                {title:"Drawing Basics Overview — Proko", url:"https://www.youtube.com/embed/r-JhCL3a1uA"}
-              ],
-              practice:"Fill one full sketchbook page with controlled lines, hatching, and cross-hatching. No 'drawings' yet — pure marks."
-            },
-            { week:2, title:"Simplifying Objects / Learning to See",
-              videos:[
-                {title:"Simplifying Objects + Learning to See — Virtual Instructor", url:"https://www.youtube.com/embed/5EkP6MVz7oU"},
-                {title:"Where and How to Start on a Drawing — Virtual Instructor", url:"https://www.youtube.com/embed/HJUGwpzShEA"}
-              ],
-              practice:"Draw 5 household objects as simple shapes only (no detail). Contour only."
-            },
-            { week:3, title:"Value and Shading",
-              videos:[
-                {title:"Shading Techniques — Virtual Instructor", url:"https://www.youtube.com/embed/YEGVMCJxnr4"},
-                {title:"Values & Edges — Virtual Instructor", url:"https://www.youtube.com/embed/Hkr6lDvKuac"}
-              ],
-              practice:"Create a full value scale (10 steps). Shade a simple sphere from observation."
-            },
-            { week:4, title:"Proportion & Measurement",
-              videos:[
-                {title:"How to Measure While Drawing — Proko", url:"https://www.youtube.com/embed/oRJ1MkBYEXw"},
-                {title:"Proportion Basics — Virtual Instructor", url:"https://www.youtube.com/embed/N_oAWHxS5lo"}
-              ],
-              practice:"Draw a still life of 3 objects. Focus entirely on measuring relationships before marking."
-            },
-            { week:5, title:"One-Point Perspective",
-              videos:[{title:"One-Point Perspective — Virtual Instructor", url:"https://www.youtube.com/embed/o2IFU9_rJ-Y"}],
-              practice:"Draw a simple interior room in one-point perspective from imagination, then from observation."
-            },
-            { week:6, title:"Two-Point Perspective",
-              videos:[{title:"Two-Point Perspective — Virtual Instructor", url:"https://www.youtube.com/embed/nAlCKgDSRJE"}],
-              practice:"Draw a building exterior using two-point perspective (from life or window view)."
-            },
-            { week:7, title:"Still Life Setup & Composition",
-              videos:[
-                {title:"Setting Up a Still Life — Virtual Instructor", url:"https://www.youtube.com/embed/6YZDl1g9LkE"},
-                {title:"Compositional Guidelines — Virtual Instructor", url:"https://www.youtube.com/embed/_2xlR_QnpYE"}
-              ],
-              practice:"Set up your own still life at home. Do 3 thumbnail compositions before committing to the final drawing."
-            },
-            { week:8, title:"Edges & Observational Drawing",
-              videos:[
-                {title:"Observing Edges for Realistic Renderings — Virtual Instructor", url:"https://www.youtube.com/embed/hQyLlKaJOr4"},
-                {title:"Sketching from Life — Virtual Instructor", url:"https://www.youtube.com/embed/jq-pIl-RZ3g"}
-              ],
-              practice:"Draw the same still life twice: once all hard edges, once with lost and found edges."
-            },
-            { week:9, title:"Form, Structure & Cross-Contour",
-              videos:[
-                {title:"Structure Basics (3D Form) — Proko", url:"https://www.youtube.com/embed/dSN_s2hKZiQ"},
-                {title:"Cross-Contour Lines — Proko", url:"https://www.youtube.com/embed/oNLGMTqzGrg"}
-              ],
-              practice:"Draw simple objects (mug, book, bottle) as solid 3D boxes first, then develop the final form on top."
-            },
-            { week:10, title:"Term Review / Timed Studies",
-              videos:[{title:"Shape Design & Simplification — Proko", url:"https://www.youtube.com/embed/4Ic9OFO8YEg"}],
-              practice:"Do 5 timed still-life studies (15 min each). Assemble your best 5 drawings as your Term 1 portfolio."
-            },
-          ]
-        },
-        {
-          id:"t2", label:"Term 2", title:"Intro to Painting / Design", color:"#7a9e7e",
-          lessons: [
-            { week:11, title:"Painting Materials & Setup",
-              videos:[
-                {title:"Getting Started with Oil Painting — Draw Mix Paint", url:"https://www.youtube.com/embed/vBU0dUoTf9I"},
-                {title:"Color Theory Overview — Virtual Instructor", url:"https://www.youtube.com/embed/L1CK9bE3H_s"}
-              ],
-              practice:"Paint a simple value study (gray only — no color) of 3 objects."
-            },
-            { week:12, title:"Value in Paint",
-              videos:[{title:"How to Paint Lights and Darks — Draw Mix Paint", url:"https://www.youtube.com/embed/qKsGAiCsBa8"}],
-              practice:"Paint a still life in monochrome (burnt umber or black + white only). Focus purely on value."
-            },
-            { week:13, title:"Color Mixing Fundamentals",
-              videos:[
-                {title:"How to Mix Any Color — Draw Mix Paint", url:"https://www.youtube.com/embed/Y1aGFwBDHPU"},
-                {title:"Limited Palette — Draw Mix Paint", url:"https://www.youtube.com/embed/zHjUkHsL0FY"}
-              ],
-              practice:"Mix a color chart: all 12 hues on the color wheel using just 3 primaries + white."
-            },
-            { week:14, title:"Color Temperature",
-              videos:[{title:"Color Theory for Painters — Proko ft. Marco Bucci", url:"https://www.youtube.com/embed/AAgFXA4O9bY"}],
-              practice:"Paint a simple still life focusing only on warm/cool temperature relationships."
-            },
-            { week:15, title:"Composition",
-              videos:[
-                {title:"Compositional Guidelines — Virtual Instructor", url:"https://www.youtube.com/embed/_2xlR_QnpYE"},
-                {title:"Composition for Painters — Draw Paint Academy", url:"https://www.youtube.com/embed/wg-So3ElA8Q"}
-              ],
-              practice:"Do 10 thumbnail composition sketches of scenes around your home or neighborhood."
-            },
-            { week:16, title:"Still Life Painting I",
-              videos:[{title:"How to Oil Paint Still Life for Beginners — NMA / Charles Hu", url:"https://www.youtube.com/embed/2UvWSrFFVt4"}],
-              practice:"Paint a still life from observation start-to-finish using the blocking-in method shown."
-            },
-            { week:17, title:"Edges in Paint",
-              videos:[{title:"How to Paint Edges — Draw Mix Paint", url:"https://www.youtube.com/embed/HK-HzDJ52N4"}],
-              practice:"Repaint last week's still life focusing entirely on edge quality (soft vs. hard vs. lost)."
-            },
-            { week:18, title:"Elements & Principles of Design",
-              videos:[
-                {title:"Elements of Art: Shape — Virtual Instructor", url:"https://www.youtube.com/embed/3yBBF4_PBpo"},
-                {title:"Elements of Art: Value — Virtual Instructor", url:"https://www.youtube.com/embed/YEGVMCJxnr4"}
-              ],
-              practice:"Design 3 non-representational compositions, each emphasizing one element of design."
-            },
-            { week:19, title:"Light and Shadow",
-              videos:[{title:"How Light Works on Forms — Proko", url:"https://www.youtube.com/embed/d7yNdzPYNgA"}],
-              practice:"Paint 3 small (5×7\") studies of a single object under different light positions."
-            },
-            { week:20, title:"Term 2 Portfolio Project", videos:[],
-              practice:"Complete one full painting from direct observation. Photograph your 3 best paintings + 3 best drawings. Save as your Foundation Term 1–2 portfolio."
-            },
-          ]
-        },
-        {
-          id:"t3", label:"Term 3", title:"Figure Drawing", color:"#8a7fb5",
-          lessons: [
-            { week:21, title:"Introduction to the Figure / Gesture",
-              videos:[
-                {title:"Figure Drawing Fundamentals: Intro — Proko", url:"https://www.youtube.com/embed/rNiBjHymU0k"},
-                {title:"How to Draw Gesture (Overview) — Proko", url:"https://www.youtube.com/embed/74HR59yFZ7Y"}
-              ],
-              practice:"20 gesture drawings at 30 seconds each (use line-of-action.com). Focus on flow, not finish."
-            },
-            { week:22, title:"Gesture Drawing in Depth",
-              videos:[
-                {title:"How to Draw Gesture Step by Step — Proko", url:"https://www.youtube.com/embed/8j39NqwL7s4"},
-                {title:"Gesture Drawing: Start Here — Love Life Drawing", url:"https://www.youtube.com/embed/v7jCuJiWFoU"}
-              ],
-              practice:"30 gestures/day. Mix 30-sec, 1-min, and 2-min poses. Use line-of-action.com."
-            },
-            { week:23, title:"The Bean & Basic Structure",
-              videos:[{title:"The Bean (Torso Structure) — Proko", url:"https://www.youtube.com/embed/Jg2oDOvbAbM"}],
-              practice:"Over your gesture sketches, add the bean and robo-bean structure on 10 figures."
-            },
-            { week:24, title:"Proportions of the Figure",
-              videos:[{title:"Proportions of the Human Figure — Proko", url:"https://www.youtube.com/embed/QFsay1cjF9Y"}],
-              practice:"Draw 5 full figures from reference, checking 8-head proportion throughout."
-            },
-            { week:25, title:"Legs and Feet",
-              videos:[
-                {title:"How to Draw Legs — Proko", url:"https://www.youtube.com/embed/3GBbp8-6o74"},
-                {title:"How to Draw Feet — Proko", url:"https://www.youtube.com/embed/sXxnPRfgExM"}
-              ],
-              practice:"20 drawings of legs/feet from reference. Use line-of-action.com for variety."
-            },
-            { week:26, title:"Arms and Hands",
-              videos:[
-                {title:"How to Draw Arms — Proko", url:"https://www.youtube.com/embed/WuH-uLqdmNg"},
-                {title:"How to Draw Hands — Proko", url:"https://www.youtube.com/embed/MNcEGZwuVSo"}
-              ],
-              practice:"20 hand studies. This is notoriously the hardest part — expect frustration. Keep going."
-            },
-            { week:27, title:"The Head: Basic Structure",
-              videos:[{title:"How to Draw the Head (Loomis Method) — Proko", url:"https://www.youtube.com/embed/wAOlyQPCFoA"}],
-              practice:"Draw 10 heads using the Loomis method. Front view and 3/4 view."
-            },
-            { week:28, title:"Facial Features",
-              videos:[
-                {title:"How to Draw the Eyes — Proko", url:"https://www.youtube.com/embed/eiEMAxiR1bA"},
-                {title:"How to Draw the Nose — Proko", url:"https://www.youtube.com/embed/6i4m73KdBfE"},
-                {title:"How to Draw the Mouth — Proko", url:"https://www.youtube.com/embed/a_e8-Jz8mng"}
-              ],
-              practice:"One page each: 10 eyes, 10 noses, 10 mouths from reference."
-            },
-            { week:29, title:"Drawing the Full Figure from Life",
-              videos:[{title:"Working the Whole Figure — Proko", url:"https://www.youtube.com/embed/c_0xzTOAjs0"}],
-              practice:"Use line-of-action.com for 20-min poses. Do 5 complete figure drawings."
-            },
-            { week:30, title:"Term 3 Review", videos:[],
-              practice:"Draw 3 finished full-figure studies (each 45+ minutes). This is your Term 3 portfolio milestone."
-            },
-          ]
-        },
-      ]
-    },
-    {
-      label: "Year Two", subtitle: "Expanding Breadth",
-      terms: [
-        {
-          id:"t4", label:"Term 4", title:"Portraiture", color:"#c8785a",
-          lessons: [
-            { week:31, title:"Planes of the Head",
-              videos:[{title:"Planes of the Head — Proko", url:"https://www.youtube.com/embed/MNcEGZwuVSo"}],
-              practice:"Draw the Asaro head (simplified planes) from 3 different angles using reference."
-            },
-            { week:32, title:"Constructing the Head from Any Angle",
-              videos:[{title:"How to Draw the Head from Any Angle — Proko", url:"https://www.youtube.com/embed/wAOlyQPCFoA"}],
-              practice:"Draw 10 heads from different angles using the Loomis construction method."
-            },
-            { week:33, title:"Portrait from Life / Reference",
-              videos:[{title:"How to Draw a Realistic Portrait — Virtual Instructor", url:"https://www.youtube.com/embed/n6tBzfAlf-4"}],
-              practice:"One finished portrait drawing from photo or mirror (self-portrait). Minimum 2 hours."
-            },
-            { week:34, title:"Painting a Portrait I — Value Study",
-              videos:[{title:"How to Paint a Head in Value — Marco Bucci", url:"https://www.youtube.com/embed/L_Sc6-jEOv8"}],
-              practice:"Paint a monochrome portrait study (single session, 2 hours)."
-            },
-            { week:35, title:"Painting a Portrait II — Color",
-              videos:[{title:"Portrait Painting Basics — Proko", url:"https://www.youtube.com/embed/ks6q06zJL1M"}],
-              practice:"Paint a small (5×7\") color portrait from photo reference. Don't overwork it."
-            },
-            { week:36, title:"Portrait Project Week 1", videos:[],
-              practice:"One finished portrait drawing or painting from observation. Subject: self-portrait."
-            },
-            { week:37, title:"Portrait Project Week 2", videos:[],
-              practice:"One finished portrait from a friend or family member (or photo)."
-            },
-            { week:38, title:"Portrait Project Week 3", videos:[],
-              practice:"One painted portrait. Focus on getting the likeness right before worrying about finish."
-            },
-            { week:39, title:"Portrait Project Week 4", videos:[],
-              practice:"One finished portrait. Try a different angle or lighting setup than before."
-            },
-            { week:40, title:"Term 4 Portfolio Review", videos:[],
-              practice:"You should now have 5 completed portraits. Lay them all out. Identify your weakest area and target it in Term 5."
-            },
-          ]
-        },
-        {
-          id:"t5", label:"Term 5", title:"Watercolor / Wet Media", color:"#5a8fc8",
-          lessons: [
-            { week:41, title:"Watercolor Materials & Washes",
-              videos:[{title:"Watercolor for Beginners (Complete Free Class) — Jenna Rainey", url:"https://www.youtube.com/embed/R3TDRTiDFmo"}],
-              practice:"Make flat washes and graded washes on a full sheet. Fill the page."
-            },
-            { week:42, title:"Wet-on-Wet vs. Wet-on-Dry",
-              videos:[{title:"Wet-on-Wet vs. Wet-on-Dry — Virtual Instructor", url:"https://www.youtube.com/embed/HOCwXTKJ-lw"}],
-              practice:"Paint the same simple scene twice: once wet-on-wet, once wet-on-dry."
-            },
-            { week:43, title:"Color Mixing in Watercolor",
-              videos:[{title:"Color Mixing in Watercolor — Virtual Instructor", url:"https://www.youtube.com/embed/G5qLxo_HWEE"}],
-              practice:"Paint a full color wheel and value scale in watercolor. Mix everything from 3 primaries."
-            },
-            { week:44, title:"Watercolor Still Life",
-              videos:[{title:"Painting a Still Life in Watercolor — Virtual Instructor", url:"https://www.youtube.com/embed/wr-WKv9IlNo"}],
-              practice:"Paint a simple 3-object still life from observation. Keep it small (5×7\")."
-            },
-            { week:45, title:"Watercolor Landscape",
-              videos:[{title:"Beginner Watercolor Landscape — Joe Cartwright", url:"https://www.youtube.com/embed/mPKLCKPM3RQ"}],
-              practice:"Paint a simple landscape or view from a window in watercolor."
-            },
-            { week:46, title:"Watercolor Project 1", videos:[], practice:"One complete watercolor painting: still life subject." },
-            { week:47, title:"Watercolor Project 2", videos:[], practice:"One complete watercolor painting: landscape subject." },
-            { week:48, title:"Watercolor Project 3", videos:[], practice:"One complete watercolor painting: interior scene." },
-            { week:49, title:"Watercolor Project 4", videos:[], practice:"One complete watercolor painting: portrait or figure subject." },
-            { week:50, title:"Term 5 Portfolio Review", videos:[],
-              practice:"You should have 5 finished watercolors. Select the strongest 3 for your portfolio."
-            },
-          ]
-        },
-        {
-          id:"t6", label:"Term 6", title:"Landscape + Printmaking", color:"#6b9e88",
-          lessons: [
-            { week:51, title:"Landscape Fundamentals",
-              videos:[{title:"Complete Landscape Painting Course (7+ hrs) — Samuel Earp", url:"https://www.youtube.com/embed/TCXadq5LWdg"}],
-              practice:"Watch first 2 hours of the course. Paint 3 small sky studies (clouds or clear)."
-            },
-            { week:52, title:"Atmospheric Perspective",
-              videos:[{title:"Atmospheric Perspective — Draw Paint Academy", url:"https://www.youtube.com/embed/X_qQAYS0bps"}],
-              practice:"Paint a landscape with clear foreground, middle ground, and background. Show depth through value and color temperature."
-            },
-            { week:53, title:"Landscape from Direct Observation", videos:[],
-              practice:"Go outside (or use a window) and paint directly from observation. Even 20 minutes counts. Do this 3 times this week."
-            },
-            { week:54, title:"Notan & Landscape Composition",
-              videos:[{title:"Notan Design for Landscapes — Draw Paint Academy", url:"https://www.youtube.com/embed/7u0HJ2SLezQ"}],
-              practice:"Do 10 landscape thumbnail sketches (2\"×3\" each) in pencil or ink before any painting."
-            },
-            { week:55, title:"Landscape Final Painting", videos:[],
-              practice:"Complete one finished landscape painting from observation or reference. Spend at least 3 sessions on it."
-            },
-            { week:56, title:"Intro to Printmaking / Linocut",
-              videos:[{title:"Linocut for Absolute Beginners — SWYM Art", url:"https://www.youtube.com/embed/k57k7BpUn4U"}],
-              practice:"Acquire basic linocut supplies (~$20–25 total). Carve and print a simple shape to get a feel for the tools."
-            },
-            { week:57, title:"Designing for Print",
-              videos:[{title:"Linocut Design Principles — Esther Bradley", url:"https://www.youtube.com/embed/kEKLFaknIkQ"}],
-              practice:"Design a simple image (animal, plant, object). Transfer to lino. Begin carving."
-            },
-            { week:58, title:"Inking & Printing",
-              videos:[{title:"How to Ink and Print Your Linocut — WeeBluePress", url:"https://www.youtube.com/embed/vwxPx3JM00A"}],
-              practice:"Print an edition of 10 copies. Pay attention to ink consistency and pressure."
-            },
-            { week:59, title:"Multi-Value / Color Linocut",
-              videos:[{title:"Reduction Linocut Intro — Speedball Art", url:"https://www.youtube.com/embed/O0TkZKvT6GY"}],
-              practice:"Plan a 2-value (light + dark) print. Carve and print."
-            },
-            { week:60, title:"Final Portfolio & Celebration 🎉", videos:[],
-              practice:"Complete one finished linocut print in 2 colors (edition of 5+). Assemble your full Year 2 portfolio: 5 portraits, 5 watercolors, 5 landscape paintings, 1 linocut edition. You have completed the WSS Foundation Certificate equivalent!"
-            },
-          ]
-        },
-      ]
-    }
-  ],
-  resources: [
-    { label:"Daily Gesture Practice", url:"https://line-of-action.com", note:"15–20 min every session" },
-    { label:"Figure Reference", url:"https://senshistock.deviantart.com", note:"Free pose reference library" },
-    { label:"Art History Context", url:"https://www.khanacademy.org/humanities/art-history", note:"30 min/week" },
-    { label:"Community Critique", url:"https://reddit.com/r/learnart", note:"Post your work weekly" },
-    { label:"r/ArtFundamentals", url:"https://reddit.com/r/ArtFundamentals", note:"Structured peer critique" },
-  ]
+years: [
+{
+label: “Year One”, subtitle: “Building the Foundation”,
+terms: [
+{
+id:“t1”, label:“Term 1”, title:“Introduction to Drawing”, color:”#c8a96e”,
+lessons: [
+{ week:1, title:“Materials, Mark-Making & Seeing”,
+videos:[
+{title:“Sketching Basics + Materials — Virtual Instructor”, url:“https://www.youtube.com/embed/wKyD5MvKTDs”},
+{title:“Drawing Basics Overview — Proko”, url:“https://www.youtube.com/embed/r-JhCL3a1uA”}
+],
+practice:“Fill one full sketchbook page with controlled lines, hatching, and cross-hatching. No ‘drawings’ yet — pure marks.”
+},
+{ week:2, title:“Simplifying Objects / Learning to See”,
+videos:[
+{title:“Simplifying Objects + Learning to See — Virtual Instructor”, url:“https://www.youtube.com/embed/5EkP6MVz7oU”},
+{title:“Where and How to Start on a Drawing — Virtual Instructor”, url:“https://www.youtube.com/embed/HJUGwpzShEA”}
+],
+practice:“Draw 5 household objects as simple shapes only (no detail). Contour only.”
+},
+{ week:3, title:“Value and Shading”,
+videos:[
+{title:“Shading Techniques — Virtual Instructor”, url:“https://www.youtube.com/embed/YEGVMCJxnr4”},
+{title:“Values & Edges — Virtual Instructor”, url:“https://www.youtube.com/embed/Hkr6lDvKuac”}
+],
+practice:“Create a full value scale (10 steps). Shade a simple sphere from observation.”
+},
+{ week:4, title:“Proportion & Measurement”,
+videos:[
+{title:“How to Measure While Drawing — Proko”, url:“https://www.youtube.com/embed/oRJ1MkBYEXw”},
+{title:“Proportion Basics — Virtual Instructor”, url:“https://www.youtube.com/embed/N_oAWHxS5lo”}
+],
+practice:“Draw a still life of 3 objects. Focus entirely on measuring relationships before marking.”
+},
+{ week:5, title:“One-Point Perspective”,
+videos:[{title:“One-Point Perspective — Virtual Instructor”, url:“https://www.youtube.com/embed/o2IFU9_rJ-Y”}],
+practice:“Draw a simple interior room in one-point perspective from imagination, then from observation.”
+},
+{ week:6, title:“Two-Point Perspective”,
+videos:[{title:“Two-Point Perspective — Virtual Instructor”, url:“https://www.youtube.com/embed/nAlCKgDSRJE”}],
+practice:“Draw a building exterior using two-point perspective (from life or window view).”
+},
+{ week:7, title:“Still Life Setup & Composition”,
+videos:[
+{title:“Setting Up a Still Life — Virtual Instructor”, url:“https://www.youtube.com/embed/6YZDl1g9LkE”},
+{title:“Compositional Guidelines — Virtual Instructor”, url:“https://www.youtube.com/embed/_2xlR_QnpYE”}
+],
+practice:“Set up your own still life at home. Do 3 thumbnail compositions before committing to the final drawing.”
+},
+{ week:8, title:“Edges & Observational Drawing”,
+videos:[
+{title:“Observing Edges for Realistic Renderings — Virtual Instructor”, url:“https://www.youtube.com/embed/hQyLlKaJOr4”},
+{title:“Sketching from Life — Virtual Instructor”, url:“https://www.youtube.com/embed/jq-pIl-RZ3g”}
+],
+practice:“Draw the same still life twice: once all hard edges, once with lost and found edges.”
+},
+{ week:9, title:“Form, Structure & Cross-Contour”,
+videos:[
+{title:“Structure Basics (3D Form) — Proko”, url:“https://www.youtube.com/embed/dSN_s2hKZiQ”},
+{title:“Cross-Contour Lines — Proko”, url:“https://www.youtube.com/embed/oNLGMTqzGrg”}
+],
+practice:“Draw simple objects (mug, book, bottle) as solid 3D boxes first, then develop the final form on top.”
+},
+{ week:10, title:“Term Review / Timed Studies”,
+videos:[{title:“Shape Design & Simplification — Proko”, url:“https://www.youtube.com/embed/4Ic9OFO8YEg”}],
+practice:“Do 5 timed still-life studies (15 min each). Assemble your best 5 drawings as your Term 1 portfolio.”
+},
+]
+},
+{
+id:“t2”, label:“Term 2”, title:“Intro to Painting / Design”, color:”#7a9e7e”,
+lessons: [
+{ week:11, title:“Painting Materials & Setup”,
+videos:[
+{title:“Getting Started with Oil Painting — Draw Mix Paint”, url:“https://www.youtube.com/embed/vBU0dUoTf9I”},
+{title:“Color Theory Overview — Virtual Instructor”, url:“https://www.youtube.com/embed/L1CK9bE3H_s”}
+],
+practice:“Paint a simple value study (gray only — no color) of 3 objects.”
+},
+{ week:12, title:“Value in Paint”,
+videos:[{title:“How to Paint Lights and Darks — Draw Mix Paint”, url:“https://www.youtube.com/embed/qKsGAiCsBa8”}],
+practice:“Paint a still life in monochrome (burnt umber or black + white only). Focus purely on value.”
+},
+{ week:13, title:“Color Mixing Fundamentals”,
+videos:[
+{title:“How to Mix Any Color — Draw Mix Paint”, url:“https://www.youtube.com/embed/Y1aGFwBDHPU”},
+{title:“Limited Palette — Draw Mix Paint”, url:“https://www.youtube.com/embed/zHjUkHsL0FY”}
+],
+practice:“Mix a color chart: all 12 hues on the color wheel using just 3 primaries + white.”
+},
+{ week:14, title:“Color Temperature”,
+videos:[{title:“Color Theory for Painters — Proko ft. Marco Bucci”, url:“https://www.youtube.com/embed/AAgFXA4O9bY”}],
+practice:“Paint a simple still life focusing only on warm/cool temperature relationships.”
+},
+{ week:15, title:“Composition”,
+videos:[
+{title:“Compositional Guidelines — Virtual Instructor”, url:“https://www.youtube.com/embed/_2xlR_QnpYE”},
+{title:“Composition for Painters — Draw Paint Academy”, url:“https://www.youtube.com/embed/wg-So3ElA8Q”}
+],
+practice:“Do 10 thumbnail composition sketches of scenes around your home or neighborhood.”
+},
+{ week:16, title:“Still Life Painting I”,
+videos:[{title:“How to Oil Paint Still Life for Beginners — NMA / Charles Hu”, url:“https://www.youtube.com/embed/2UvWSrFFVt4”}],
+practice:“Paint a still life from observation start-to-finish using the blocking-in method shown.”
+},
+{ week:17, title:“Edges in Paint”,
+videos:[{title:“How to Paint Edges — Draw Mix Paint”, url:“https://www.youtube.com/embed/HK-HzDJ52N4”}],
+practice:“Repaint last week’s still life focusing entirely on edge quality (soft vs. hard vs. lost).”
+},
+{ week:18, title:“Elements & Principles of Design”,
+videos:[
+{title:“Elements of Art: Shape — Virtual Instructor”, url:“https://www.youtube.com/embed/3yBBF4_PBpo”},
+{title:“Elements of Art: Value — Virtual Instructor”, url:“https://www.youtube.com/embed/YEGVMCJxnr4”}
+],
+practice:“Design 3 non-representational compositions, each emphasizing one element of design.”
+},
+{ week:19, title:“Light and Shadow”,
+videos:[{title:“How Light Works on Forms — Proko”, url:“https://www.youtube.com/embed/d7yNdzPYNgA”}],
+practice:“Paint 3 small (5×7") studies of a single object under different light positions.”
+},
+{ week:20, title:“Term 2 Portfolio Project”, videos:[],
+practice:“Complete one full painting from direct observation. Photograph your 3 best paintings + 3 best drawings. Save as your Foundation Term 1–2 portfolio.”
+},
+]
+},
+{
+id:“t3”, label:“Term 3”, title:“Figure Drawing”, color:”#8a7fb5”,
+lessons: [
+{ week:21, title:“Introduction to the Figure / Gesture”,
+videos:[
+{title:“Figure Drawing Fundamentals: Intro — Proko”, url:“https://www.youtube.com/embed/rNiBjHymU0k”},
+{title:“How to Draw Gesture (Overview) — Proko”, url:“https://www.youtube.com/embed/74HR59yFZ7Y”}
+],
+practice:“20 gesture drawings at 30 seconds each (use line-of-action.com). Focus on flow, not finish.”
+},
+{ week:22, title:“Gesture Drawing in Depth”,
+videos:[
+{title:“How to Draw Gesture Step by Step — Proko”, url:“https://www.youtube.com/embed/8j39NqwL7s4”},
+{title:“Gesture Drawing: Start Here — Love Life Drawing”, url:“https://www.youtube.com/embed/v7jCuJiWFoU”}
+],
+practice:“30 gestures/day. Mix 30-sec, 1-min, and 2-min poses. Use line-of-action.com.”
+},
+{ week:23, title:“The Bean & Basic Structure”,
+videos:[{title:“The Bean (Torso Structure) — Proko”, url:“https://www.youtube.com/embed/Jg2oDOvbAbM”}],
+practice:“Over your gesture sketches, add the bean and robo-bean structure on 10 figures.”
+},
+{ week:24, title:“Proportions of the Figure”,
+videos:[{title:“Proportions of the Human Figure — Proko”, url:“https://www.youtube.com/embed/QFsay1cjF9Y”}],
+practice:“Draw 5 full figures from reference, checking 8-head proportion throughout.”
+},
+{ week:25, title:“Legs and Feet”,
+videos:[
+{title:“How to Draw Legs — Proko”, url:“https://www.youtube.com/embed/3GBbp8-6o74”},
+{title:“How to Draw Feet — Proko”, url:“https://www.youtube.com/embed/sXxnPRfgExM”}
+],
+practice:“20 drawings of legs/feet from reference. Use line-of-action.com for variety.”
+},
+{ week:26, title:“Arms and Hands”,
+videos:[
+{title:“How to Draw Arms — Proko”, url:“https://www.youtube.com/embed/WuH-uLqdmNg”},
+{title:“How to Draw Hands — Proko”, url:“https://www.youtube.com/embed/MNcEGZwuVSo”}
+],
+practice:“20 hand studies. This is notoriously the hardest part — expect frustration. Keep going.”
+},
+{ week:27, title:“The Head: Basic Structure”,
+videos:[{title:“How to Draw the Head (Loomis Method) — Proko”, url:“https://www.youtube.com/embed/wAOlyQPCFoA”}],
+practice:“Draw 10 heads using the Loomis method. Front view and 3/4 view.”
+},
+{ week:28, title:“Facial Features”,
+videos:[
+{title:“How to Draw the Eyes — Proko”, url:“https://www.youtube.com/embed/eiEMAxiR1bA”},
+{title:“How to Draw the Nose — Proko”, url:“https://www.youtube.com/embed/6i4m73KdBfE”},
+{title:“How to Draw the Mouth — Proko”, url:“https://www.youtube.com/embed/a_e8-Jz8mng”}
+],
+practice:“One page each: 10 eyes, 10 noses, 10 mouths from reference.”
+},
+{ week:29, title:“Drawing the Full Figure from Life”,
+videos:[{title:“Working the Whole Figure — Proko”, url:“https://www.youtube.com/embed/c_0xzTOAjs0”}],
+practice:“Use line-of-action.com for 20-min poses. Do 5 complete figure drawings.”
+},
+{ week:30, title:“Term 3 Review”, videos:[],
+practice:“Draw 3 finished full-figure studies (each 45+ minutes). This is your Term 3 portfolio milestone.”
+},
+]
+},
+]
+},
+{
+label: “Year Two”, subtitle: “Expanding Breadth”,
+terms: [
+{
+id:“t4”, label:“Term 4”, title:“Portraiture”, color:”#c8785a”,
+lessons: [
+{ week:31, title:“Planes of the Head”,
+videos:[{title:“Planes of the Head — Proko”, url:“https://www.youtube.com/embed/MNcEGZwuVSo”}],
+practice:“Draw the Asaro head (simplified planes) from 3 different angles using reference.”
+},
+{ week:32, title:“Constructing the Head from Any Angle”,
+videos:[{title:“How to Draw the Head from Any Angle — Proko”, url:“https://www.youtube.com/embed/wAOlyQPCFoA”}],
+practice:“Draw 10 heads from different angles using the Loomis construction method.”
+},
+{ week:33, title:“Portrait from Life / Reference”,
+videos:[{title:“How to Draw a Realistic Portrait — Virtual Instructor”, url:“https://www.youtube.com/embed/n6tBzfAlf-4”}],
+practice:“One finished portrait drawing from photo or mirror (self-portrait). Minimum 2 hours.”
+},
+{ week:34, title:“Painting a Portrait I — Value Study”,
+videos:[{title:“How to Paint a Head in Value — Marco Bucci”, url:“https://www.youtube.com/embed/L_Sc6-jEOv8”}],
+practice:“Paint a monochrome portrait study (single session, 2 hours).”
+},
+{ week:35, title:“Painting a Portrait II — Color”,
+videos:[{title:“Portrait Painting Basics — Proko”, url:“https://www.youtube.com/embed/ks6q06zJL1M”}],
+practice:“Paint a small (5×7") color portrait from photo reference. Don’t overwork it.”
+},
+{ week:36, title:“Portrait Project Week 1”, videos:[],
+practice:“One finished portrait drawing or painting from observation. Subject: self-portrait.”
+},
+{ week:37, title:“Portrait Project Week 2”, videos:[],
+practice:“One finished portrait from a friend or family member (or photo).”
+},
+{ week:38, title:“Portrait Project Week 3”, videos:[],
+practice:“One painted portrait. Focus on getting the likeness right before worrying about finish.”
+},
+{ week:39, title:“Portrait Project Week 4”, videos:[],
+practice:“One finished portrait. Try a different angle or lighting setup than before.”
+},
+{ week:40, title:“Term 4 Portfolio Review”, videos:[],
+practice:“You should now have 5 completed portraits. Lay them all out. Identify your weakest area and target it in Term 5.”
+},
+]
+},
+{
+id:“t5”, label:“Term 5”, title:“Watercolor / Wet Media”, color:”#5a8fc8”,
+lessons: [
+{ week:41, title:“Watercolor Materials & Washes”,
+videos:[{title:“Watercolor for Beginners (Complete Free Class) — Jenna Rainey”, url:“https://www.youtube.com/embed/R3TDRTiDFmo”}],
+practice:“Make flat washes and graded washes on a full sheet. Fill the page.”
+},
+{ week:42, title:“Wet-on-Wet vs. Wet-on-Dry”,
+videos:[{title:“Wet-on-Wet vs. Wet-on-Dry — Virtual Instructor”, url:“https://www.youtube.com/embed/HOCwXTKJ-lw”}],
+practice:“Paint the same simple scene twice: once wet-on-wet, once wet-on-dry.”
+},
+{ week:43, title:“Color Mixing in Watercolor”,
+videos:[{title:“Color Mixing in Watercolor — Virtual Instructor”, url:“https://www.youtube.com/embed/G5qLxo_HWEE”}],
+practice:“Paint a full color wheel and value scale in watercolor. Mix everything from 3 primaries.”
+},
+{ week:44, title:“Watercolor Still Life”,
+videos:[{title:“Painting a Still Life in Watercolor — Virtual Instructor”, url:“https://www.youtube.com/embed/wr-WKv9IlNo”}],
+practice:“Paint a simple 3-object still life from observation. Keep it small (5×7").”
+},
+{ week:45, title:“Watercolor Landscape”,
+videos:[{title:“Beginner Watercolor Landscape — Joe Cartwright”, url:“https://www.youtube.com/embed/mPKLCKPM3RQ”}],
+practice:“Paint a simple landscape or view from a window in watercolor.”
+},
+{ week:46, title:“Watercolor Project 1”, videos:[], practice:“One complete watercolor painting: still life subject.” },
+{ week:47, title:“Watercolor Project 2”, videos:[], practice:“One complete watercolor painting: landscape subject.” },
+{ week:48, title:“Watercolor Project 3”, videos:[], practice:“One complete watercolor painting: interior scene.” },
+{ week:49, title:“Watercolor Project 4”, videos:[], practice:“One complete watercolor painting: portrait or figure subject.” },
+{ week:50, title:“Term 5 Portfolio Review”, videos:[],
+practice:“You should have 5 finished watercolors. Select the strongest 3 for your portfolio.”
+},
+]
+},
+{
+id:“t6”, label:“Term 6”, title:“Landscape + Printmaking”, color:”#6b9e88”,
+lessons: [
+{ week:51, title:“Landscape Fundamentals”,
+videos:[{title:“Complete Landscape Painting Course (7+ hrs) — Samuel Earp”, url:“https://www.youtube.com/embed/TCXadq5LWdg”}],
+practice:“Watch first 2 hours of the course. Paint 3 small sky studies (clouds or clear).”
+},
+{ week:52, title:“Atmospheric Perspective”,
+videos:[{title:“Atmospheric Perspective — Draw Paint Academy”, url:“https://www.youtube.com/embed/X_qQAYS0bps”}],
+practice:“Paint a landscape with clear foreground, middle ground, and background. Show depth through value and color temperature.”
+},
+{ week:53, title:“Landscape from Direct Observation”, videos:[],
+practice:“Go outside (or use a window) and paint directly from observation. Even 20 minutes counts. Do this 3 times this week.”
+},
+{ week:54, title:“Notan & Landscape Composition”,
+videos:[{title:“Notan Design for Landscapes — Draw Paint Academy”, url:“https://www.youtube.com/embed/7u0HJ2SLezQ”}],
+practice:“Do 10 landscape thumbnail sketches (2"×3" each) in pencil or ink before any painting.”
+},
+{ week:55, title:“Landscape Final Painting”, videos:[],
+practice:“Complete one finished landscape painting from observation or reference. Spend at least 3 sessions on it.”
+},
+{ week:56, title:“Intro to Printmaking / Linocut”,
+videos:[{title:“Linocut for Absolute Beginners — SWYM Art”, url:“https://www.youtube.com/embed/k57k7BpUn4U”}],
+practice:“Acquire basic linocut supplies (~$20–25 total). Carve and print a simple shape to get a feel for the tools.”
+},
+{ week:57, title:“Designing for Print”,
+videos:[{title:“Linocut Design Principles — Esther Bradley”, url:“https://www.youtube.com/embed/kEKLFaknIkQ”}],
+practice:“Design a simple image (animal, plant, object). Transfer to lino. Begin carving.”
+},
+{ week:58, title:“Inking & Printing”,
+videos:[{title:“How to Ink and Print Your Linocut — WeeBluePress”, url:“https://www.youtube.com/embed/vwxPx3JM00A”}],
+practice:“Print an edition of 10 copies. Pay attention to ink consistency and pressure.”
+},
+{ week:59, title:“Multi-Value / Color Linocut”,
+videos:[{title:“Reduction Linocut Intro — Speedball Art”, url:“https://www.youtube.com/embed/O0TkZKvT6GY”}],
+practice:“Plan a 2-value (light + dark) print. Carve and print.”
+},
+{ week:60, title:“Final Portfolio & Celebration 🎉”, videos:[],
+practice:“Complete one finished linocut print in 2 colors (edition of 5+). Assemble your full Year 2 portfolio: 5 portraits, 5 watercolors, 5 landscape paintings, 1 linocut edition. You have completed the WSS Foundation Certificate equivalent!”
+},
+]
+},
+]
+}
+],
+resources: [
+{ label:“Daily Gesture Practice”, url:“https://line-of-action.com”, note:“15–20 min every session” },
+{ label:“Figure Reference”, url:“https://senshistock.deviantart.com”, note:“Free pose reference library” },
+{ label:“Art History Context”, url:“https://www.khanacademy.org/humanities/art-history”, note:“30 min/week” },
+{ label:“Community Critique”, url:“https://reddit.com/r/learnart”, note:“Post your work weekly” },
+{ label:“r/ArtFundamentals”, url:“https://reddit.com/r/ArtFundamentals”, note:“Structured peer critique” },
+]
 };
 
 const allLessons = COURSE.years.flatMap(y =>
-  y.terms.flatMap(t => t.lessons.map(l => ({...l, termId:t.id, termLabel:t.label, termColor:t.color})))
+y.terms.flatMap(t => t.lessons.map(l => ({…l, termId:t.id, termLabel:t.label, termColor:t.color})))
 );
 
 function useStorage(key, init) {
-  const [val, setVal] = React.useState(() => {
-    try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : init; } catch { return init; }
-  });
-  React.useEffect(() => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }, [val]);
-  return [val, setVal];
+const [val, setVal] = React.useState(() => {
+try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : init; } catch { return init; }
+});
+React.useEffect(() => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }, [val]);
+return [val, setVal];
 }
 
 function App() {
-  const [done, setDone] = useStorage("wss_done", []);
-  const [lesson, setLesson] = React.useState(null);
-  const [video, setVideo] = React.useState(null);
-
-  const toggle = (w) => setDone(p => p.includes(w) ? p.filter(x=>x!==w) : [...p, w]);
-  const open = (l) => { setLesson(l); setVideo(l.videos[0]||null); window.scrollTo(0,0); };
-  const pct = Math.round((done.length/60)*100);
-
-  if (lesson) return <LessonView lesson={lesson} video={video} setVideo={setVideo} onBack={()=>setLesson(null)} done={done} toggle={toggle} open={open} pct={pct}/>;
-
-  return (
-    <div style={{minHeight:"100vh",background:"#111"}}>
-      <Header done={done} pct={pct}/>
-      <div style={{maxWidth:1100,margin:"0 auto",padding:"32px 20px 80px"}}>
-        {COURSE.years.map((y,i) => <YearBlock key={i} year={y} done={done} open={open}/>)}
-        <Resources/>
-      </div>
-    </div>
-  );
+const [done, setDone] = useStorage(“wss_done”, []);
+const [lesson, setLesson] = React.useState(null);
+const [video, setVideo] = React.useState(null);
+const toggle = (w) => setDone(p => p.includes(w) ? p.filter(x=>x!==w) : […p, w]);
+const open = (l) => { setLesson(l); setVideo(l.videos[0]||null); window.scrollTo(0,0); };
+const pct = Math.round((done.length/60)*100);
+if (lesson) return <LessonView lesson={lesson} video={video} setVideo={setVideo} onBack={()=>setLesson(null)} done={done} toggle={toggle} open={open} pct={pct}/>;
+return (
+<div style={{minHeight:“100vh”,background:”#111”}}>
+<Header done={done} pct={pct}/>
+<div style={{maxWidth:1100,margin:“0 auto”,padding:“32px 20px 80px”}}>
+{COURSE.years.map((y,i) => <YearBlock key={i} year={y} done={done} open={open}/>)}
+<Resources/>
+</div>
+</div>
+);
 }
 
 function Header({done,pct}) {
-  return (
-    <header style={{background:"#1a1814",borderBottom:"1px solid #252220",padding:"16px 20px",position:"sticky",top:0,zIndex:100}}>
-      <div className="header-inner" style={{maxWidth:1100,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",gap:16,flexWrap:"wrap"}}>
-        <div style={{display:"flex",alignItems:"center",gap:14}}>
-          <div style={{background:"#c8a96e",color:"#1a1814",fontWeight:"bold",fontSize:17,width:46,height:46,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,letterSpacing:"0.04em"}}>WSS</div>
-          <div>
-            <div style={{fontSize:19,color:"#e8e0d5",letterSpacing:"0.01em"}}>Washington Studio School</div>
-            <div style={{fontSize:10,color:"#777",letterSpacing:"0.08em",textTransform:"uppercase",marginTop:2}}>Foundation Certificate · Free YouTube Curriculum</div>
-          </div>
-        </div>
-        <div className="progress-block" style={{display:"flex",flexDirection:"column",alignItems:"flex-end",gap:5}}>
-          <div style={{fontSize:12,color:"#999"}}>{done.length} / 60 weeks complete</div>
-          <div className="progress-bar" style={{width:160,height:5,background:"#252220",borderRadius:3,overflow:"hidden"}}>
-            <div style={{height:"100%",width:`${pct}%`,background:"linear-gradient(90deg,#c8a96e,#8a7fb5)",transition:"width 0.5s"}}/>
-          </div>
-          <div style={{fontSize:12,color:"#c8a96e",fontWeight:"bold"}}>{pct}%</div>
-        </div>
-      </div>
-    </header>
-  );
+return (
+<header style={{background:”#1a1814”,borderBottom:“1px solid #252220”,padding:“16px 20px”,position:“sticky”,top:0,zIndex:100}}>
+<div className=“header-inner” style={{maxWidth:1100,margin:“0 auto”,display:“flex”,alignItems:“center”,justifyContent:“space-between”,gap:16,flexWrap:“wrap”}}>
+<div style={{display:“flex”,alignItems:“center”,gap:14}}>
+<div style={{background:”#c8a96e”,color:”#1a1814”,fontWeight:“bold”,fontSize:17,width:46,height:46,borderRadius:8,display:“flex”,alignItems:“center”,justifyContent:“center”,flexShrink:0,letterSpacing:“0.04em”}}>WSS</div>
+<div>
+<div style={{fontSize:19,color:”#e8e0d5”,letterSpacing:“0.01em”}}>Washington Studio School</div>
+<div style={{fontSize:10,color:”#777”,letterSpacing:“0.08em”,textTransform:“uppercase”,marginTop:2}}>Foundation Certificate · Free YouTube Curriculum</div>
+</div>
+</div>
+<div className=“progress-block” style={{display:“flex”,flexDirection:“column”,alignItems:“flex-end”,gap:5}}>
+<div style={{fontSize:12,color:”#999”}}>{done.length} / 60 weeks complete</div>
+<div className=“progress-bar” style={{width:160,height:5,background:”#252220”,borderRadius:3,overflow:“hidden”}}>
+<div style={{height:“100%”,width:`${pct}%`,background:“linear-gradient(90deg,#c8a96e,#8a7fb5)”,transition:“width 0.5s”}}/>
+</div>
+<div style={{fontSize:12,color:”#c8a96e”,fontWeight:“bold”}}>{pct}%</div>
+</div>
+</div>
+</header>
+);
 }
 
 function YearBlock({year,done,open}) {
-  return (
-    <section style={{marginBottom:48}}>
-      <div style={{display:"flex",alignItems:"baseline",gap:12,marginBottom:18,borderBottom:"1px solid #222",paddingBottom:12}}>
-        <h2 style={{fontSize:26,fontWeight:"normal",color:"#e8e0d5"}}>{year.label}</h2>
-        <span style={{color:"#777",fontSize:14,fontStyle:"italic"}}>{year.subtitle}</span>
-      </div>
-      <div style={{display:"flex",flexDirection:"column",gap:10}}>
-        {year.terms.map(t => <TermCard key={t.id} term={t} done={done} open={open}/>)}
-      </div>
-    </section>
-  );
+return (
+<section style={{marginBottom:48}}>
+<div style={{display:“flex”,alignItems:“baseline”,gap:12,marginBottom:18,borderBottom:“1px solid #222”,paddingBottom:12}}>
+<h2 style={{fontSize:26,fontWeight:“normal”,color:”#e8e0d5”}}>{year.label}</h2>
+<span style={{color:”#777”,fontSize:14,fontStyle:“italic”}}>{year.subtitle}</span>
+</div>
+<div style={{display:“flex”,flexDirection:“column”,gap:10}}>
+{year.terms.map(t => <TermCard key={t.id} term={t} done={done} open={open}/>)}
+</div>
+</section>
+);
 }
 
 function TermCard({term,done,open}) {
-  const [exp, setExp] = React.useState(false);
-  const c = term.lessons.filter(l=>done.includes(l.week)).length;
-  const p = Math.round((c/term.lessons.length)*100);
-  return (
-    <div style={{background:"#1a1814",borderRadius:8,overflow:"hidden",border:"1px solid #222",borderTop:`4px solid ${term.color}`}}>
-      <button className="term-header" onClick={()=>setExp(e=>!e)} style={{width:"100%",background:"none",border:"none",padding:"14px 18px",display:"flex",alignItems:"center",justifyContent:"space-between",cursor:"pointer",color:"#e8e0d5",gap:12}}>
-        <div style={{display:"flex",alignItems:"center",gap:12}}>
-          <span style={{fontSize:10,fontWeight:"bold",letterSpacing:"0.1em",color:"#1a1814",background:term.color,padding:"3px 9px",borderRadius:4,textTransform:"uppercase",flexShrink:0}}>{term.label}</span>
-          <div>
-            <div style={{fontSize:15,color:"#e8e0d5",textAlign:"left"}}>{term.title}</div>
-            <div style={{fontSize:11,color:"#777",marginTop:2,textAlign:"left"}}>10 weeks · {c}/{term.lessons.length} complete</div>
-          </div>
-        </div>
-        <svg style={{transform:exp?"rotate(180deg)":"rotate(0)",transition:"transform 0.2s",flexShrink:0}} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div style={{height:4,background:"#2a2620"}}>
-        <div style={{height:"100%",width:`${p}%`,background:term.color,transition:"width 0.4s"}}/>
-      </div>
-      {exp && <div>{term.lessons.map(l=><LessonRow key={l.week} lesson={{...l,termColor:term.color}} done={done} open={open}/>)}</div>}
-    </div>
-  );
+const [exp, setExp] = React.useState(false);
+const c = term.lessons.filter(l=>done.includes(l.week)).length;
+const p = Math.round((c/term.lessons.length)*100);
+return (
+<div style={{background:”#1a1814”,borderRadius:8,overflow:“hidden”,border:“1px solid #222”,borderTop:`4px solid ${term.color}`}}>
+<button className=“term-header” onClick={()=>setExp(e=>!e)} style={{width:“100%”,background:“none”,border:“none”,padding:“14px 18px”,display:“flex”,alignItems:“center”,justifyContent:“space-between”,cursor:“pointer”,color:”#e8e0d5”,gap:12}}>
+<div style={{display:“flex”,alignItems:“center”,gap:12}}>
+<span style={{fontSize:10,fontWeight:“bold”,letterSpacing:“0.1em”,color:”#1a1814”,background:term.color,padding:“3px 9px”,borderRadius:4,textTransform:“uppercase”,flexShrink:0}}>{term.label}</span>
+<div>
+<div style={{fontSize:15,color:”#e8e0d5”,textAlign:“left”}}>{term.title}</div>
+<div style={{fontSize:11,color:”#777”,marginTop:2,textAlign:“left”}}>10 weeks · {c}/{term.lessons.length} complete</div>
+</div>
+</div>
+<svg style={{transform:exp?“rotate(180deg)”:“rotate(0)”,transition:“transform 0.2s”,flexShrink:0}} width=“18” height=“18” viewBox=“0 0 24 24” fill=“none” stroke=”#666” strokeWidth=“2”><polyline points="6 9 12 15 18 9"/></svg>
+</button>
+<div style={{height:4,background:”#2a2620”}}>
+<div style={{height:“100%”,width:`${p}%`,background:term.color,transition:“width 0.4s”}}/>
+</div>
+{exp && <div>{term.lessons.map(l=><LessonRow key={l.week} lesson={{...l,termColor:term.color}} done={done} open={open}/>)}</div>}
+</div>
+);
 }
 
 function LessonRow({lesson,done,open}) {
-  const d = done.includes(lesson.week);
-  return (
-    <button className="lesson-row" onClick={()=>open(lesson)} style={{width:"100%",background:d?"rgba(255,255,255,0.03)":"transparent",border:"none",borderBottom:"1px solid #1c1c1c",padding:"11px 18px",display:"flex",alignItems:"center",gap:12,cursor:"pointer",color:"#e8e0d5",textAlign:"left"}}>
-      <div style={{width:20,height:20,borderRadius:"50%",border:`2px solid ${lesson.termColor}`,background:d?lesson.termColor:"transparent",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,transition:"background 0.2s"}}>
-        {d&&<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
-      </div>
-      <div style={{flex:1,display:"flex",flexDirection:"column",gap:2}}>
-        <span style={{fontSize:10,color:"#666",letterSpacing:"0.06em",textTransform:"uppercase"}}>Week {lesson.week}</span>
-        <span style={{fontSize:14,color:"#ccc"}}>{lesson.title}</span>
-      </div>
-      <div style={{display:"flex",alignItems:"center",gap:8}}>
-        {lesson.videos.length>0&&<span style={{fontSize:11,color:"#888",background:"#1e1e1e",padding:"2px 7px",borderRadius:4}}>▶ {lesson.videos.length}</span>}
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-    </button>
-  );
+const d = done.includes(lesson.week);
+return (
+<button className=“lesson-row” onClick={()=>open(lesson)} style={{width:“100%”,background:d?“rgba(255,255,255,0.03)”:“transparent”,border:“none”,borderBottom:“1px solid #1c1c1c”,padding:“11px 18px”,display:“flex”,alignItems:“center”,gap:12,cursor:“pointer”,color:”#e8e0d5”,textAlign:“left”}}>
+<div style={{width:20,height:20,borderRadius:“50%”,border:`2px solid ${lesson.termColor}`,background:d?lesson.termColor:“transparent”,display:“flex”,alignItems:“center”,justifyContent:“center”,flexShrink:0,transition:“background 0.2s”}}>
+{d&&<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>}
+</div>
+<div style={{flex:1,display:“flex”,flexDirection:“column”,gap:2}}>
+<span style={{fontSize:10,color:”#666”,letterSpacing:“0.06em”,textTransform:“uppercase”}}>Week {lesson.week}</span>
+<span style={{fontSize:14,color:”#ccc”}}>{lesson.title}</span>
+</div>
+<div style={{display:“flex”,alignItems:“center”,gap:8}}>
+{lesson.videos.length>0&&<span style={{fontSize:11,color:”#888”,background:”#1e1e1e”,padding:“2px 7px”,borderRadius:4}}>▶ {lesson.videos.length}</span>}
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+</div>
+</button>
+);
 }
 
 function LessonView({lesson,video,setVideo,onBack,done,toggle,open,pct}) {
-  const d = done.includes(lesson.week);
-  const idx = allLessons.findIndex(l=>l.week===lesson.week);
-  const prev = idx>0?allLessons[idx-1]:null;
-  const next = idx<allLessons.length-1?allLessons[idx+1]:null;
-  const go = (l) => { open(l); };
+const d = done.includes(lesson.week);
+const idx = allLessons.findIndex(l=>l.week===lesson.week);
+const prev = idx>0?allLessons[idx-1]:null;
+const next = idx<allLessons.length-1?allLessons[idx+1]:null;
+const go = (l) => open(l);
 
-  return (
-    <div style={{minHeight:"100vh",background:"#111"}}>
-      {/* Top bar */}
-      <div style={{background:"#1a1814",borderBottom:"1px solid #222",padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:10,position:"sticky",top:0,zIndex:100}}>
-        <button onClick={onBack} style={{background:"none",border:"none",color:"#c8a96e",fontSize:14,cursor:"pointer",display:"flex",alignItems:"center",gap:5,padding:0}}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
-          All Courses
-        </button>
-        <div style={{fontSize:13}}>
-          <span style={{color:lesson.termColor}}>{lesson.termLabel}</span>
-          <span style={{color:"#444"}}> › </span>
-          <span style={{color:"#bbb"}}>Week {lesson.week}</span>
+return (
+<div style={{minHeight:“100vh”,background:”#111”}}>
+<div style={{background:”#1a1814”,borderBottom:“1px solid #222”,padding:“12px 20px”,display:“flex”,alignItems:“center”,justifyContent:“space-between”,flexWrap:“wrap”,gap:10,position:“sticky”,top:0,zIndex:100}}>
+<button onClick={onBack} style={{background:“none”,border:“none”,color:”#c8a96e”,fontSize:14,cursor:“pointer”,display:“flex”,alignItems:“center”,gap:5,padding:0}}>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+All Courses
+</button>
+<div style={{fontSize:13}}>
+<span style={{color:lesson.termColor}}>{lesson.termLabel}</span>
+<span style={{color:”#444”}}> › </span>
+<span style={{color:”#bbb”}}>Week {lesson.week}</span>
+</div>
+<div style={{fontSize:12,color:”#777”}}>{pct}% complete</div>
+</div>
+
+```
+  <div className="lesson-layout" style={{display:"flex",alignItems:"flex-start"}}>
+    <div style={{flex:1,minWidth:0}}>
+      {video ? (
+        <div style={{background:"#000",position:"relative",paddingBottom:"56.25%",height:0}}>
+          <iframe key={video.url} src={video.url+"?rel=0"} title={video.title}
+            style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",border:"none"}}
+            allowFullScreen allow="fullscreen; picture-in-picture"/>
         </div>
-        <div style={{fontSize:12,color:"#777"}}>{pct}% complete</div>
-      </div>
-
-      <div className="lesson-layout" style={{display:"flex",alignItems:"flex-start"}}>
-        {/* Main */}
-        <div style={{flex:1,minWidth:0}}>
-          {video ? (
-            <div style={{background:"#000",position:"relative",paddingBottom:"56.25%",height:0}}>
-              <iframe key={video.url} src={video.url+"?autoplay=1&rel=0"} title={video.title}
-                style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",border:"none"}}
-                allowFullScreen allow="autoplay; fullscreen; picture-in-picture"/>
-            </div>
-          ) : (
-            <div style={{background:"#161412",minHeight:260,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
-              <div style={{fontSize:52,marginBottom:14}}>✏️</div>
-              <div style={{color:"#888",fontSize:16}}>Practice week — no video.</div>
-              <div style={{color:"#555",fontSize:13,marginTop:6}}>See the assignment below.</div>
-            </div>
-          )}
-
-          {lesson.videos.length>1&&(
-            <div style={{display:"flex",background:"#161412",borderBottom:"1px solid #222",overflowX:"auto"}}>
-              {lesson.videos.map((v,i)=>(
-                <button key={i} onClick={()=>setVideo(v)} style={{background:"none",border:"none",borderBottom:`2px solid ${video?.url===v.url?lesson.termColor:"transparent"}`,padding:"11px 14px",cursor:"pointer",fontSize:11,color:video?.url===v.url?"#e8e0d5":"#777",whiteSpace:"nowrap",transition:"color 0.15s",fontFamily:"Georgia,serif"}}>
-                  {v.title}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div style={{padding:"24px 28px 60px"}}>
-            <h2 style={{fontSize:22,fontWeight:"normal",color:"#e8e0d5",marginBottom:20,lineHeight:1.3}}>Week {lesson.week} — {lesson.title}</h2>
-
-            <div style={{background:"#161412",borderRadius:6,padding:"16px 18px",marginBottom:28,borderLeft:`3px solid ${lesson.termColor}`}}>
-              <div style={{fontSize:10,color:"#999",letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10}}>📋 Practice Assignment</div>
-              <p style={{margin:0,color:"#bbb",lineHeight:1.8,fontSize:15}}>{lesson.practice}</p>
-            </div>
-
-            <div className="nav-row" style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:12,alignItems:"center"}}>
-              <div>
-                {prev&&(
-                  <button className="nav-btn" onClick={()=>go(prev)} style={{background:"none",border:"1px solid #252220",color:"#999",padding:"10px 14px",borderRadius:6,cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",gap:8,fontFamily:"Georgia,serif",lineHeight:1.3,maxWidth:220}}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
-                    <div><div style={{fontSize:9,color:"#666",marginBottom:2}}>PREVIOUS</div><div>Wk {prev.week}: {prev.title}</div></div>
-                  </button>
-                )}
-              </div>
-              <button onClick={()=>toggle(lesson.week)} style={{padding:"10px 22px",borderRadius:6,fontSize:13,cursor:"pointer",fontFamily:"Georgia,serif",background:d?"#252220":lesson.termColor,color:d?"#777":"#fff",border:d?`1px solid ${lesson.termColor}`:"1px solid transparent",whiteSpace:"nowrap",transition:"background 0.2s",justifySelf:"center"}}>
-                {d?"✓ Complete":"Mark Complete"}
-              </button>
-              <div style={{textAlign:"right"}}>
-                {next&&(
-                  <button className="nav-btn" onClick={()=>go(next)} style={{background:"none",border:"1px solid #252220",color:"#999",padding:"10px 14px",borderRadius:6,cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",gap:8,fontFamily:"Georgia,serif",lineHeight:1.3,marginLeft:"auto",maxWidth:220}}>
-                    <div><div style={{fontSize:9,color:"#666",marginBottom:2}}>NEXT</div><div>Wk {next.week}: {next.title}</div></div>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+      ) : (
+        <div style={{background:"#161412",minHeight:260,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:40}}>
+          <div style={{fontSize:52,marginBottom:14}}>✏️</div>
+          <div style={{color:"#888",fontSize:16}}>Practice week — no video.</div>
+          <div style={{color:"#555",fontSize:13,marginTop:6}}>See the assignment below.</div>
         </div>
+      )}
 
-        {/* Sidebar */}
-        <aside className="sidebar" style={{width:260,flexShrink:0,background:"#141210",borderLeft:"1px solid #1e1e1e",padding:"20px 16px",minHeight:"calc(100vh - 50px)",overflowY:"auto"}}>
-          <div style={{marginBottom:26}}>
-            <div style={{fontSize:10,letterSpacing:"0.09em",textTransform:"uppercase",color:"#666",marginBottom:12}}>Videos in this lesson</div>
-            {lesson.videos.length===0&&<p style={{color:"#555",fontSize:13,lineHeight:1.5}}>No video this week — practice or portfolio week.</p>}
-            {lesson.videos.map((v,i)=>(
-              <button key={i} onClick={()=>setVideo(v)} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:10,borderRadius:6,cursor:"pointer",marginBottom:6,border:`1px solid ${video?.url===v.url?lesson.termColor:"#252220"}`,background:video?.url===v.url?"rgba(255,255,255,0.06)":"transparent",textAlign:"left"}}>
-                <div style={{width:26,height:26,borderRadius:4,background:lesson.termColor,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,color:"#fff",flexShrink:0}}>▶</div>
-                <span style={{fontSize:11,color:"#bbb",lineHeight:1.4}}>{v.title}</span>
-              </button>
-            ))}
-          </div>
+      {/* "Video not loading?" bar — shown whenever there's a video */}
+      {video && (
+        <div style={{background:"#0d0d0d",padding:"9px 16px",borderBottom:"1px solid #1c1c1c",display:"flex",alignItems:"center",gap:10,flexWrap:"wrap"}}>
+          <span style={{fontSize:12,color:"#666"}}>Video not loading?</span>
+          <a href={embedToWatch(video.url)} target="_blank" rel="noreferrer"
+            style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(255,50,50,0.12)",border:"1px solid rgba(255,50,50,0.25)",color:"#ff5555",fontSize:12,fontWeight:"bold",padding:"5px 12px",borderRadius:5}}>
+            ▶ &nbsp;Watch on YouTube
+          </a>
+        </div>
+      )}
+
+      {/* Video tabs */}
+      {lesson.videos.length>1&&(
+        <div style={{display:"flex",background:"#161412",borderBottom:"1px solid #222",overflowX:"auto"}}>
+          {lesson.videos.map((v,i)=>(
+            <button key={i} onClick={()=>setVideo(v)} style={{background:"none",border:"none",borderBottom:`2px solid ${video?.url===v.url?lesson.termColor:"transparent"}`,padding:"11px 14px",cursor:"pointer",fontSize:11,color:video?.url===v.url?"#e8e0d5":"#777",whiteSpace:"nowrap",transition:"color 0.15s",fontFamily:"Georgia,serif"}}>
+              {v.title}
+            </button>
+          ))}
+        </div>
+      )}
+
+      <div style={{padding:"24px 28px 60px"}}>
+        <h2 style={{fontSize:22,fontWeight:"normal",color:"#e8e0d5",marginBottom:20,lineHeight:1.3}}>Week {lesson.week} — {lesson.title}</h2>
+        <div style={{background:"#161412",borderRadius:6,padding:"16px 18px",marginBottom:28,borderLeft:`3px solid ${lesson.termColor}`}}>
+          <div style={{fontSize:10,color:"#999",letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:10}}>📋 Practice Assignment</div>
+          <p style={{margin:0,color:"#bbb",lineHeight:1.8,fontSize:15}}>{lesson.practice}</p>
+        </div>
+        <div className="nav-row" style={{display:"grid",gridTemplateColumns:"1fr auto 1fr",gap:12,alignItems:"center"}}>
           <div>
-            <div style={{fontSize:10,letterSpacing:"0.09em",textTransform:"uppercase",color:"#666",marginBottom:12}}>Always-on resources</div>
-            {COURSE.resources.map((r,i)=>(
-              <a key={i} href={r.url} target="_blank" rel="noreferrer" style={{display:"block",padding:"8px 0",borderBottom:"1px solid #1a1a1a"}}>
-                <div style={{fontSize:12,color:"#c8a96e",marginBottom:3}}>{r.label}</div>
-                <div style={{fontSize:11,color:"#666",lineHeight:1.4}}>{r.note}</div>
-              </a>
-            ))}
+            {prev&&(
+              <button className="nav-btn" onClick={()=>go(prev)} style={{background:"none",border:"1px solid #252220",color:"#999",padding:"10px 14px",borderRadius:6,cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",gap:8,fontFamily:"Georgia,serif",lineHeight:1.3,maxWidth:220}}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"/></svg>
+                <div><div style={{fontSize:9,color:"#666",marginBottom:2}}>PREVIOUS</div><div>Wk {prev.week}: {prev.title}</div></div>
+              </button>
+            )}
           </div>
-        </aside>
+          <button onClick={()=>toggle(lesson.week)} style={{padding:"10px 22px",borderRadius:6,fontSize:13,cursor:"pointer",fontFamily:"Georgia,serif",background:d?"#252220":lesson.termColor,color:d?"#777":"#fff",border:d?`1px solid ${lesson.termColor}`:"1px solid transparent",whiteSpace:"nowrap",transition:"background 0.2s",justifySelf:"center"}}>
+            {d?"✓ Complete":"Mark Complete"}
+          </button>
+          <div style={{textAlign:"right"}}>
+            {next&&(
+              <button className="nav-btn" onClick={()=>go(next)} style={{background:"none",border:"1px solid #252220",color:"#999",padding:"10px 14px",borderRadius:6,cursor:"pointer",fontSize:12,display:"flex",alignItems:"center",gap:8,fontFamily:"Georgia,serif",lineHeight:1.3,marginLeft:"auto",maxWidth:220}}>
+                <div><div style={{fontSize:9,color:"#666",marginBottom:2}}>NEXT</div><div>Wk {next.week}: {next.title}</div></div>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
-  );
-}
 
-function Resources() {
-  return (
-    <section style={{borderTop:"1px solid #1e1e1e",paddingTop:28,marginTop:8}}>
-      <div style={{fontSize:14,color:"#888",marginBottom:14}}>Ongoing Resources — Use Throughout the Program</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:10}}>
+    {/* Sidebar */}
+    <aside className="sidebar" style={{width:260,flexShrink:0,background:"#141210",borderLeft:"1px solid #1e1e1e",padding:"20px 16px",minHeight:"calc(100vh - 50px)",overflowY:"auto"}}>
+      <div style={{marginBottom:26}}>
+        <div style={{fontSize:10,letterSpacing:"0.09em",textTransform:"uppercase",color:"#666",marginBottom:12}}>Videos in this lesson</div>
+        {lesson.videos.length===0&&<p style={{color:"#555",fontSize:13,lineHeight:1.5}}>No video this week — practice or portfolio week.</p>}
+        {lesson.videos.map((v,i)=>(
+          <div key={i} style={{marginBottom:12}}>
+            {/* Embed selector button */}
+            <button onClick={()=>setVideo(v)} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:10,borderRadius:6,cursor:"pointer",marginBottom:6,border:`1px solid ${video?.url===v.url?lesson.termColor:"#252220"}`,background:video?.url===v.url?"rgba(255,255,255,0.06)":"transparent",textAlign:"left"}}>
+              <div style={{width:26,height:26,borderRadius:4,background:lesson.termColor,display:"flex",alignItems:"center",justifyContent:"center",fontSize:10,color:"#fff",flexShrink:0}}>▶</div>
+              <span style={{fontSize:11,color:"#bbb",lineHeight:1.4}}>{v.title}</span>
+            </button>
+            {/* YouTube direct link */}
+            <a href={embedToWatch(v.url)} target="_blank" rel="noreferrer" className="yt-link"
+              style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6,padding:"6px 10px",borderRadius:5,background:"rgba(255,50,50,0.1)",border:"1px solid rgba(255,50,50,0.2)",fontSize:11,color:"#ff6666",transition:"background 0.15s"}}>
+              <span>▶</span>
+              <span>Open in YouTube</span>
+            </a>
+          </div>
+        ))}
+      </div>
+      <div>
+        <div style={{fontSize:10,letterSpacing:"0.09em",textTransform:"uppercase",color:"#666",marginBottom:12}}>Always-on resources</div>
         {COURSE.resources.map((r,i)=>(
-          <a key={i} href={r.url} target="_blank" rel="noreferrer" className="resource-card" style={{background:"#1a1814",border:"1px solid #222",borderRadius:7,padding:"13px 15px",display:"block",textDecoration:"none"}}>
-            <div style={{fontSize:13,color:"#c8a96e",marginBottom:5}}>{r.label}</div>
+          <a key={i} href={r.url} target="_blank" rel="noreferrer" style={{display:"block",padding:"8px 0",borderBottom:"1px solid #1a1a1a"}}>
+            <div style={{fontSize:12,color:"#c8a96e",marginBottom:3}}>{r.label}</div>
             <div style={{fontSize:11,color:"#666",lineHeight:1.4}}>{r.note}</div>
           </a>
         ))}
       </div>
-    </section>
-  );
+    </aside>
+  </div>
+</div>
+```
+
+);
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+function Resources() {
+return (
+<section style={{borderTop:“1px solid #1e1e1e”,paddingTop:28,marginTop:8}}>
+<div style={{fontSize:14,color:”#888”,marginBottom:14}}>Ongoing Resources — Use Throughout the Program</div>
+<div style={{display:“grid”,gridTemplateColumns:“repeat(auto-fill,minmax(180px,1fr))”,gap:10}}>
+{COURSE.resources.map((r,i)=>(
+<a key={i} href={r.url} target=”_blank” rel=“noreferrer” className=“resource-card” style={{background:”#1a1814”,border:“1px solid #222”,borderRadius:7,padding:“13px 15px”,display:“block”}}>
+<div style={{fontSize:13,color:”#c8a96e”,marginBottom:5}}>{r.label}</div>
+<div style={{fontSize:11,color:”#666”,lineHeight:1.4}}>{r.note}</div>
+</a>
+))}
+</div>
+</section>
+);
+}
+
+ReactDOM.createRoot(document.getElementById(‘root’)).render(<App/>);
 </script>
+
 </body>
 </html>
